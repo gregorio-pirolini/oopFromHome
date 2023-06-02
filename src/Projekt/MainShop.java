@@ -2,11 +2,15 @@ package Projekt;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+
+
 
 
 public class MainShop {
+
+    Object o;
+
+    Produkt p;
 
     static Scanner scanner = new Scanner(System.in);
     static String markeEg, modellEg;
@@ -19,48 +23,51 @@ public class MainShop {
 
  
 
-    private static Map<String, Maus>mausMap;
-    private static Map<String, Monitor>monitorMap;
-    private static Map<String, Motherboard>motherboardMap;
-    private static Map<String, Tastatur>tastaturMap;
-    private static  ArrayList<Map>onlineShop; 
+
+    private static  ArrayList<Liste>onlineShop;
    
     
  
   
     public static void main(String[] args) {
 
-        mausMap = new HashMap<>();
-        monitorMap =new HashMap<>();
-        motherboardMap = new HashMap<>();
-        tastaturMap = new HashMap<>();
+
 
         onlineShop = new ArrayList<>();
         
 Maus maus1 = new Maus("markeEg", "modellEg", 0, "farbeEg");
-mausMap.put("Maus", maus1);
-onlineShop.add(mausMap);
-
+Liste liste = new Liste("Maus",maus1);
+onlineShop.add(liste);
+        System.out.println( maus1.getDetails());
 Monitor monitor1 = new Monitor("markeEg", "modellEg", 0, 4);
-monitorMap.put("Monitor", monitor1);
-onlineShop.add(monitorMap);
+liste = new Liste("Monitor", monitor1);
+onlineShop.add(liste);
 
 Motherboard motherboard1 = new Motherboard("markeEg", "modellEg", 0, "formFaktorEg");
-motherboardMap.put("Monitor", motherboard1);
-onlineShop.add(motherboardMap);
+        liste = new Liste("Motherboard", motherboard1);
+        onlineShop.add(liste);
 
 Tastatur tastatur1 = new Tastatur("markeEg", "modellEg", 0, true);
 
-tastaturMap.put("Tastatur", tastatur1);
-onlineShop.add(tastaturMap);
+        liste = new Liste("Tastatur", tastatur1);
+        onlineShop.add(liste);
 
-for (Map<String, Object> item : onlineShop) {
-    for (Map.Entry<String, Object> entry : item.entrySet()) {
-        String key = entry.getKey();
-        Object value = entry.getValue();
-        System.out.println("Key: " + key + ", Value: " + value);
-    } }
+
+
+
+showShop();
+
+
+
         hauptMenue();
+    }
+
+    private static void showShop() {
+        for (int i = 0; i<onlineShop.size(); i++ ){
+
+            System.out.println("id: " + i +' '+ onlineShop.get(i).getDetails());
+        }
+
     }
 
     public static void hauptMenue() {
@@ -106,19 +113,42 @@ for (Map<String, Object> item : onlineShop) {
     }
 
     private static void produktBearbeiten() {
+
+        boolean validation = false;
+
+        while(!validation){
         System.out.println("----------------------------------------------------");
         System.out.println("PC-Shop \t\t Produkt bearbeiten \t\t von Greg Maleterre");
         System.out.println("----------------------------------------------------");
 
+        showShop();
 
-        System.out.println("1) Monitor");
-        System.out.println("2) Motherboard");
-        System.out.println("3) Tastatur");
-        System.out.println("4) Mouse");
-
-
+        System.out.println("exit \t\t --> \t\t hauptmenue";
         System.out.println("----------------------------------------------------");
-        System.out.println("Bitte wählen");
+        System.out.println("Bitte id oder exit wählen");
+
+
+
+        String entry = scanner.next();
+       if(entry.equals("exit")) {
+           validation = true;
+           hauptMenue();
+       }else  {
+
+           try{
+
+              int num = scanner.nextInt();
+
+
+               validation = true;
+           } catch (InputMismatchException e) {
+               System.out.println("Eingabe!!");
+               scanner.next();
+           }
+       }
+
+
+        }
 
     }
 
@@ -220,8 +250,10 @@ for (Map<String, Object> item : onlineShop) {
                     Monitor monitorNew = new Monitor(markeEg, modellEg, preisEg, zollEg);
                    
                     
-                    monitorMap.put("Monitor", monitorNew);
-                    
+
+                   Liste liste = new Liste("Monitor", monitorNew);
+                    onlineShop.add(liste);
+
                     validation = true;
                 } catch (InputMismatchException e) {
                     System.out.println("Produkt anlegen Fehlerhafte Eingabe!!");
@@ -242,7 +274,10 @@ for (Map<String, Object> item : onlineShop) {
                 Motherboard motherboardNew = new Motherboard(markeEg, modellEg, preisEg, formFaktorEg);
                  
              
-                motherboardMap.put("Motherboard", motherboardNew);
+
+
+                Liste liste = new Liste("Motherboard", motherboardNew);
+                onlineShop.add(liste);
                 break;
 
             case "Tastatur":// System.out.println("Tastatur!!");
@@ -255,7 +290,11 @@ for (Map<String, Object> item : onlineShop) {
                     wirelessEg = scanner.nextBoolean();
                     Tastatur tastaturNew = new Tastatur(markeEg, modellEg, preisEg, wirelessEg);
                    
-                    tastaturMap.put("Tastatur", tastaturNew);
+
+
+                     liste = new Liste("Tastatur", tastaturNew);
+                    onlineShop.add(liste);
+
                     validation = true;
                 }  catch (InputMismatchException e) {
                     scanner.next();
@@ -277,8 +316,12 @@ for (Map<String, Object> item : onlineShop) {
                   
                 }
                 Maus mausNew = new Maus(markeEg, modellEg, preisEg, farbeEg);
-                
-                mausMap.put("Maus", mausNew);
+
+
+                 liste = new Liste("Maus", mausNew);
+                onlineShop.add(liste);
+
+
                 break;
 
 
@@ -293,7 +336,8 @@ for (Map<String, Object> item : onlineShop) {
         System.out.println("PC-Shop \t\t Produkt anlegen");
         System.out.println("----------------------------------------------------");
         System.out.println("1) neuen Produkt anlegen");
-        System.out.println("2) HauptMenue");
+        System.out.println("2) Produkt bearbeiten");
+        System.out.println("7) HauptMenue");
         System.out.println("----------------------------------------------------");
         System.out.println("Bitte wählen");
 
@@ -307,6 +351,11 @@ for (Map<String, Object> item : onlineShop) {
                 produktAnlegen();
                 break;
             case "2":
+                System.out.println("Produkt bearbeiten!!");
+                validation = true;
+                hauptMenue();
+                break;
+            case "7":
                 System.out.println("HauptMenue!!");
                 validation = true;
                 hauptMenue();
