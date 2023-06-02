@@ -123,7 +123,7 @@ showShop();
 
         showShop();
 
-        System.out.println("exit \t\t --> \t\t hauptmenue";
+        System.out.println("exit \t\t --> \t\t hauptmenue");
         System.out.println("----------------------------------------------------");
         System.out.println("Bitte id oder exit wählen");
 
